@@ -4,6 +4,12 @@
 project (ibnot)
 
 cmake_minimum_required(VERSION 2.4.5)
+
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+
 set( CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS true )
 if( COMMAND cmake_policy )
   cmake_policy( SET CMP0003 NEW )  
@@ -15,9 +21,11 @@ set( QT_USE_QTMAIN   TRUE )
 set( QT_USE_QTSCRIPT  TRUE )
 set( QT_USE_QTOPENGL  TRUE )
 
-find_package(CGAL COMPONENTS Qt4)
+find_package(CGAL COMPONENTS Qt5)
 find_package(OpenGL)
-find_package(Qt4)
+find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
+set(QT5_FOUND TRUE)
+set(QT5_LIBRARIES Qt5::Core Qt5::Widgets)
 
 set( SUITESPARSE_LIBRARIES 
      -lm -lamd -lcamd -lcolamd -lccolamd -lcholmod -lspqr -ltbb -lmetis -lblas -llapack)
@@ -33,22 +41,22 @@ set( SRCS
      assign.cpp energy.cpp glviewer.cpp histogram.cpp init.cpp 
      io.cpp main.cpp optimizer.cpp regularity.cpp render.cpp sites.cpp window.cpp )
 
-set( MOCS moc_dialog.cxx moc_glviewer.cxx moc_window.cxx )
+#set( MOCS moc_dialog.cxx moc_glviewer.cxx moc_window.cxx )
 
-if( CGAL_FOUND AND QT4_FOUND AND OPENGL_FOUND AND CGAL_Qt4_FOUND )
-    include(${QT_USE_FILE})
+if( CGAL_FOUND AND QT5_FOUND AND OPENGL_FOUND AND CGAL_Qt5_FOUND )
+    #include(${QT_USE_FILE})
     include(${CGAL_USE_FILE})
 
     # UI files (Qt Designer files)
-    qt4_wrap_ui( DT_UI_FILES dialog.ui ibnot.ui )
+    #qt4_wrap_ui( DT_UI_FILES dialog.ui ibnot.ui )
 
     # use the Qt MOC preprocessor on classes that derives from QObject
-    qt4_generate_moc( dialog.h moc_dialog.cxx )
-    qt4_generate_moc( window.h moc_window.cxx )
-    qt4_generate_moc( glviewer.h moc_glviewer.cxx )
+    #qt4_generate_moc( dialog.h moc_dialog.cxx )
+    #qt4_generate_moc( window.h moc_window.cxx )
+    #qt4_generate_moc( glviewer.h moc_glviewer.cxx )
 
     # The executable itself.
-    add_executable( ibnot ${SRCS} ${MOCS} ${DT_UI_FILES} ${DT_RESOURCE_FILES} )
+    add_executable( ibnot ${SRCS} ${DT_UI_FILES} ${DT_RESOURCE_FILES} ) #${MOCS}
 
     # Link with Qt libraries
     target_link_libraries( ibnot ${QT_LIBRARIES} )
@@ -70,16 +78,16 @@ else()
         set(OT_MISSING_DEPS "OpenGL, ${OT_MISSING_DEPS}")
     endif()
 
-    if(NOT QT4_FOUND)
-        set(OT_MISSING_DEPS "Qt4, ${OT_MISSING_DEPS}")
+    if(NOT QT5_FOUND)
+        set(OT_MISSING_DEPS "Qt5, ${OT_MISSING_DEPS}")
     endif()
 
     if(NOT CGAL_FOUND)
         set(OT_MISSING_DEPS "the CGAL library, ${OT_MISSING_DEPS}")
     endif()
 
-    if(NOT CGAL_Qt4_FOUND)
-        set(OT_MISSING_DEPS "the CGAL Qt4 library, ${OT_MISSING_DEPS}")
+    if(NOT CGAL_Qt5_FOUND)
+        set(OT_MISSING_DEPS "the CGAL Qt5 library, ${OT_MISSING_DEPS}")
     endif()
 
     message(STATUS "NOTICE: This project requires ${OT_MISSING_DEPS} and will not be compiled.")
