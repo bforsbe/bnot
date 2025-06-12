@@ -12,8 +12,8 @@ template <class Kernel, class Vbb>
 class My_vertex_base : public Vbb
 {
 public:
-    typedef typename Kernel::FT FT;
-    typedef typename Kernel::Weight   Weight;
+    typedef typename Kernel::FT       FT;
+    typedef typename Kernel::FT       Weight;
     typedef typename Kernel::Point_2  Point;
     typedef typename Kernel::Vector_2 Vector;
     typedef typename Kernel::Weighted_point_2 Weighted_point;

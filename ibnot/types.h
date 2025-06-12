@@ -2,10 +2,11 @@
 #define _TYPES_H_ 1
 
 // CGAL
-//#include <CGAL/Simple_cartesian.h>
+#include <CGAL/Simple_cartesian.h>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
-#include <CGAL/Regular_triangulation_filtered_traits_2.h>
+//#include <CGAL/Regular_triangulation_filtered_traits_2.h>
 #include <CGAL/Regular_triangulation_2.h>
+
 
 // local
 #include "enriched_segment.h"
@@ -35,9 +36,14 @@ typedef Kernel::Triangle_2 Triangle;
 typedef CDomain<Kernel> Domain;
 
 // Traits
-typedef CGAL::Regular_triangulation_filtered_traits_2<Kernel> Traits;
+//typedef CGAL::Regular_triangulation_filtered_traits_2<Kernel> Traits;
+//typedef Traits::Weighted_point_2 Weighted_point;
+//typedef Traits::Weight Weight;
+
+// Traits (use Kernel directly - it provides all necessary traits)
+typedef Kernel Traits;
 typedef Traits::Weighted_point_2 Weighted_point;
-typedef Traits::Weight Weight;
+typedef Traits::FT Weight;  // Use FT (Field Type) as the weight type
 
 // Vertex
 typedef CGAL::Regular_triangulation_vertex_base_2<Traits> RVb;
