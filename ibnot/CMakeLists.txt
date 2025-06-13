@@ -12,7 +12,7 @@ set(CMAKE_AUTORCC ON)
 
 set( CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS true )
 if( COMMAND cmake_policy )
-  cmake_policy( SET CMP0003 NEW )  
+  cmake_policy( SET CMP0003 NEW )
 endif()
 set( CMAKE_SHARED_LIBRARY_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CXX_FLAGS} -framework Accelerate" )
 
@@ -21,31 +21,33 @@ set( QT_USE_QTMAIN   TRUE )
 set( QT_USE_QTSCRIPT  TRUE )
 set( QT_USE_QTOPENGL  TRUE )
 
-find_package(CGAL COMPONENTS Qt5)
+find_package(CGAL COMPONENTS Qt6)
 find_package(OpenGL)
-find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
-set(QT5_FOUND TRUE)
-set(QT5_LIBRARIES Qt5::Core Qt5::Widgets)
+find_package(Qt6 COMPONENTS Core Widgets Gui OpenGL REQUIRED)
 
-set( SUITESPARSE_LIBRARIES 
+
+set(QT6_FOUND TRUE)
+set(QT6_LIBRARIES Qt6::Core Qt6::Widgets)
+
+set( SUITESPARSE_LIBRARIES
      -lm -lamd -lcamd -lcolamd -lccolamd -lcholmod -lspqr -ltbb -lmetis -lblas -llapack)
 
 set( HDRS
      matrix/sparse_array.h matrix/sparse_matrix.h matrix/suite_sparse_qr.h
-     console_color.h convex_polygon.h dialog.h domain.h enriched_segment.h 
+     console_color.h convex_polygon.h dialog.h domain.h enriched_segment.h
      glviewer.h grid.h line_search.h pgm.h pixel.h primitives.h pw_line_search.h
      ramp.h random.h rt2.h scene.h timer.h types.h util.h window.h )
 
-set( SRCS 
+set( SRCS
      matrix/sparse_array.cpp matrix/sparse_matrix.cpp
-     assign.cpp energy.cpp glviewer.cpp histogram.cpp init.cpp 
+     assign.cpp energy.cpp glviewer.cpp histogram.cpp init.cpp
      io.cpp main.cpp optimizer.cpp regularity.cpp render.cpp sites.cpp window.cpp )
 
 #set( MOCS moc_dialog.cxx moc_glviewer.cxx moc_window.cxx )
 
-if( CGAL_FOUND AND QT5_FOUND AND OPENGL_FOUND AND CGAL_Qt5_FOUND )
+if( CGAL_FOUND AND Qt6_FOUND AND OPENGL_FOUND AND CGAL_Qt6_FOUND )
     #include(${QT_USE_FILE})
-    include(${CGAL_USE_FILE})
+    # include(${CGAL_USE_FILE})
 
     # UI files (Qt Designer files)
     #qt4_wrap_ui( DT_UI_FILES dialog.ui ibnot.ui )
@@ -60,13 +62,13 @@ if( CGAL_FOUND AND QT5_FOUND AND OPENGL_FOUND AND CGAL_Qt5_FOUND )
 
     # Link with Qt libraries
     target_link_libraries( ibnot ${QT_LIBRARIES} )
-    
+
     # Link with Glut and OpenGL
     target_link_libraries( ibnot ${GLUT_LIBRARY} ${OPENGL_LIBRARY} )
 
     # Link with CGAL
     target_link_libraries( ibnot ${CGAL_LIBRARIES} ${CGAL_3RD_PARTY_LIBRARIES} )
-    
+
     # Link with SuiteSparse
     target_link_libraries( ibnot ${SUITESPARSE_LIBRARIES} )
 
@@ -78,16 +80,16 @@ else()
         set(OT_MISSING_DEPS "OpenGL, ${OT_MISSING_DEPS}")
     endif()
 
-    if(NOT QT5_FOUND)
-        set(OT_MISSING_DEPS "Qt5, ${OT_MISSING_DEPS}")
+    if(NOT Qt6_FOUND)
+        set(OT_MISSING_DEPS "Qt6, ${OT_MISSING_DEPS}")
     endif()
 
     if(NOT CGAL_FOUND)
         set(OT_MISSING_DEPS "the CGAL library, ${OT_MISSING_DEPS}")
     endif()
 
-    if(NOT CGAL_Qt5_FOUND)
-        set(OT_MISSING_DEPS "the CGAL Qt5 library, ${OT_MISSING_DEPS}")
+    if(NOT CGAL_Qt6_FOUND)
+        set(OT_MISSING_DEPS "the CGAL Qt6 library, ${OT_MISSING_DEPS}")
     endif()
 
     message(STATUS "NOTICE: This project requires ${OT_MISSING_DEPS} and will not be compiled.")

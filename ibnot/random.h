@@ -1,5 +1,5 @@
-#ifndef _RANDOM_
-#define _RANDOM_ 1
+#ifndef BNOT_RANDOM_
+#define BNOT_RANDOM_ 1
 
 inline
 double random_double(const double min, const double max)
