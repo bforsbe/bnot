@@ -21,13 +21,13 @@ set( QT_USE_QTMAIN   TRUE )
 set( QT_USE_QTSCRIPT  TRUE )
 set( QT_USE_QTOPENGL  TRUE )
 
-find_package(CGAL COMPONENTS Qt6)
+find_package(CGAL COMPONENTS Qt5)
 find_package(OpenGL)
-find_package(Qt6 COMPONENTS Core Widgets Gui OpenGL REQUIRED)
+find_package(Qt5 COMPONENTS Core Widgets Gui OpenGL REQUIRED)
 
 
-set(QT6_FOUND TRUE)
-set(QT6_LIBRARIES Qt6::Core Qt6::Widgets)
+set(QT5_FOUND TRUE)
+set(QT5_LIBRARIES Qt5::Core Qt5::Widgets)
 
 set( SUITESPARSE_LIBRARIES
      -lm -lamd -lcamd -lcolamd -lccolamd -lcholmod -lspqr -ltbb -lmetis -lblas -llapack)
@@ -43,9 +43,9 @@ set( SRCS
      assign.cpp energy.cpp glviewer.cpp histogram.cpp init.cpp
      io.cpp main.cpp optimizer.cpp regularity.cpp render.cpp sites.cpp window.cpp )
 
-#set( MOCS moc_dialog.cxx moc_glviewer.cxx moc_window.cxx )
+set( UI_FILES dialog.ui ibnot.ui ) 
 
-if( CGAL_FOUND AND Qt6_FOUND AND OPENGL_FOUND AND CGAL_Qt6_FOUND )
+if( CGAL_FOUND AND Qt5_FOUND AND OPENGL_FOUND AND CGAL_Qt5_FOUND )
     #include(${QT_USE_FILE})
     # include(${CGAL_USE_FILE})
 
@@ -58,7 +58,7 @@ if( CGAL_FOUND AND Qt6_FOUND AND OPENGL_FOUND AND CGAL_Qt6_FOUND )
     #qt4_generate_moc( glviewer.h moc_glviewer.cxx )
 
     # The executable itself.
-    add_executable( ibnot ${SRCS} ${DT_UI_FILES} ${DT_RESOURCE_FILES} ) #${MOCS}
+    add_executable( ibnot ${SRCS} ${DT_UI_FILES} ${DT_RESOURCE_FILES} ${UI_FILES} moc_dialog.cpp)
 
     # Link with Qt libraries
     target_link_libraries( ibnot ${QT_LIBRARIES} )
@@ -73,6 +73,8 @@ if( CGAL_FOUND AND Qt6_FOUND AND OPENGL_FOUND AND CGAL_Qt6_FOUND )
     target_link_libraries( ibnot ${SUITESPARSE_LIBRARIES} )
 
     include_directories(.)
+    include_directories(/usr/include/suitesparse)
+
 else()
     set( OT_MISSING_DEPS "")
 
@@ -81,7 +83,7 @@ else()
     endif()
 
     if(NOT Qt6_FOUND)
-        set(OT_MISSING_DEPS "Qt6, ${OT_MISSING_DEPS}")
+        set(OT_MISSING_DEPS "Qt5, ${OT_MISSING_DEPS}")
     endif()
 
     if(NOT CGAL_FOUND)
@@ -89,7 +91,7 @@ else()
     endif()
 
     if(NOT CGAL_Qt6_FOUND)
-        set(OT_MISSING_DEPS "the CGAL Qt6 library, ${OT_MISSING_DEPS}")
+        set(OT_MISSING_DEPS "the CGAL Qt5 library, ${OT_MISSING_DEPS}")
     endif()
 
     message(STATUS "NOTICE: This project requires ${OT_MISSING_DEPS} and will not be compiled.")

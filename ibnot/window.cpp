@@ -456,7 +456,7 @@ void MainWindow::on_actionBreak_Regularity_triggered()
                                             1.0, 0.0, 1.0, 5, &ok);
     if (!ok) return;
     
-    int max_teleport = QInputDialog::getInteger(this, tr("Teleport"), tr("max teleport:"), 
+    int max_teleport = QInputDialog::getInt(this, tr("Teleport"), tr("max teleport:"), 
                                                 100, 0, 10000, 1, &ok);
     if (!ok) return;
     
@@ -484,7 +484,7 @@ void MainWindow::on_actionToggleInvert_toggled()
 void MainWindow::on_actionGenerateVariablePoints_triggered()
 {
 	bool ok;
-        int nb = QInputDialog::getInteger(this, tr("Nb Sites"), tr("n:"), 1024, 3, 1500000, 1, &ok);
+        int nb = QInputDialog::getInt(this, tr("Nb Sites"), tr("n:"), 1024, 3, 1500000, 1, &ok);
     if (!ok) return;
     
 	QApplication::setOverrideCursor(Qt::WaitCursor);
@@ -658,7 +658,7 @@ void MainWindow::on_actionToggleFixedConnectivity_toggled()
 void MainWindow::on_actionCountSitesPerBin_triggered()
 {
     bool ok;
-	int nb = QInputDialog::getInteger(this, tr("NbBins"), tr("bins:"), 6, 1, 100, 1, &ok);
+	int nb = QInputDialog::getInt(this, tr("NbBins"), tr("bins:"), 6, 1, 100, 1, &ok);
     if (!ok) return;
     m_scene->count_sites_per_bin(nb);
 }
